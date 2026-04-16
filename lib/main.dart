@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app/core/utils/app_constants.dart';
 import 'package:social_media_app/core/utils/app_theme.dart';
 import 'package:social_media_app/core/utils/router/app_router.dart';
 import 'package:social_media_app/core/utils/router/app_routes.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:social_media_app/features/auth/cubit/auth_cubit.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,11 +21,24 @@ class SocialMediaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: AppConstants.appName,
-      theme: AppTheme.lightTheme,
-      onGenerateRoute: (settings) => AppRouter().generateRoute(settings),
-      initialRoute: AppRoutes.authRoute,
+    return BlocProvider(
+      create: (context) => AuthCubit(),
+      child: Builder(
+        builder: (context) {
+          return BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              return MaterialApp(
+                title: AppConstants.appName,
+                theme: AppTheme.lightTheme,
+                onGenerateRoute: (settings) =>
+                    AppRouter().generateRoute(settings),
+                initialRoute: AppRoutes.homeRoute,
+                debugShowCheckedModeBanner: false,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
