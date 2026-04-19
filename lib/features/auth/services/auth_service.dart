@@ -1,3 +1,4 @@
+import 'package:social_media_app/features/auth/models/user_data.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
@@ -28,7 +29,7 @@ class AuthService {
       if (response.user == null) {
         throw Exception('Failed to sign up');
       }
-      await _getUserData(name, email, response.user!.id);
+      await _setUserData(name, email, response.user!.id);
     } catch (e) {
       rethrow;
     }
@@ -50,7 +51,8 @@ class AuthService {
     }
   }
 
-  Future<void> _getUserData(String name, String email, String userId) async {
+  Future<void> _setUserData(String name, String email, String userId) async {
+    final userData = UserData(id: userId, name: name, email: email);
     try {
       await supabase.from("users").insert({
         'name': name,

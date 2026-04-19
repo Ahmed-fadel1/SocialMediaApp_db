@@ -5,6 +5,7 @@ import 'package:social_media_app/core/utils/app_theme.dart';
 import 'package:social_media_app/core/utils/router/app_router.dart';
 import 'package:social_media_app/core/utils/router/app_routes.dart';
 import 'package:social_media_app/features/auth/cubit/auth_cubit.dart';
+import 'package:social_media_app/features/home/cubit/home_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 Future<void> main() async {
@@ -21,8 +22,17 @@ class SocialMediaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AuthCubit()),
+        BlocProvider(
+          create: (context) {
+            final cubit = HomeCubit();
+            cubit.fetchStories();
+            return cubit;
+          },
+        ),
+      ],
       child: Builder(
         builder: (context) {
           return BlocBuilder<AuthCubit, AuthState>(
