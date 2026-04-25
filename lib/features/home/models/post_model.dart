@@ -43,11 +43,11 @@ class PostModel {
 
   factory PostModel.fromMap(Map<String, dynamic> map) {
     return PostModel(
-      id: map['id'] ?? '',
+      id: map['id']?.toString() ?? '',
       text: map['text'] ?? '',
       createdAt: map['created_at'] ?? '',
       authorId: map['author_id'] ?? ' ',
-      authorName: map['authorName'] as String?,
+      authorName: map['author_name'] as String?,
       authorimageUrl: map['authorimageUrl'] as String?,
       imageUrl: map['image_url'] as String?,
       videoUrl: map['video_url'] as String?,

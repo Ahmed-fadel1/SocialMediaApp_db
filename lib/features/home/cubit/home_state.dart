@@ -30,3 +30,20 @@ final class PostsError extends HomeState {
   final String message;
   const PostsError(this.message);
 }
+
+// post createing states
+final class PostCreating extends HomeState {}
+
+final class PostCreated extends HomeState {}
+
+final class PostCreationError extends HomeState {
+  final String message;
+  const PostCreationError(this.message);
+}
+
+final class PostCreatingInitial extends HomeState {
+  final UserData currentUser;
+  const PostCreatingInitial({required this.currentUser});
+}
+
+final class PostCreatingInitialLoading extends HomeState {}

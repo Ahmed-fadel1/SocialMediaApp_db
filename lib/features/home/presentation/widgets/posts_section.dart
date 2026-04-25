@@ -3,8 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app/features/home/cubit/home_cubit.dart';
 import 'package:social_media_app/features/home/presentation/widgets/post_item_widget.dart';
 
-class PostsSection extends StatelessWidget {
+class PostsSection extends StatefulWidget {
   const PostsSection({super.key});
+
+  @override
+  State<PostsSection> createState() => _PostsSectionState();
+}
+
+class _PostsSectionState extends State<PostsSection> {
+  @override
+  void initState() {
+    final homeCubit = BlocProvider.of<HomeCubit>(context);
+    homeCubit.refresh();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +35,16 @@ class PostsSection extends StatelessWidget {
         }
 
         if (state is PostsLoaded) {
-          final posts = state.posts; // الداتا هنا جاية من الـ State مباشرة
+          final posts = state.posts;
 
           if (posts.isEmpty) {
             return const Center(child: Text('No posts available'));
           }
 
           return ListView.builder(
-            shrinkWrap: true, // عشان لو جوه Column ميعملش Error
-            physics:
-                const NeverScrollableScrollPhysics(), // لو الـ Screen كلها بتعمل scroll
+            reverse: true,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: posts.length,
             itemBuilder: (context, index) {
               final post = posts[index];
@@ -41,7 +53,6 @@ class PostsSection extends StatelessWidget {
           );
         }
 
-        // حالة الـ Initial أو أي حالة تانية
         return const SizedBox.shrink();
       },
     );

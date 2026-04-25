@@ -1,8 +1,11 @@
+import 'package:social_media_app/core/services/supabase_services.dart';
+import 'package:social_media_app/core/utils/app_tables_names.dart';
 import 'package:social_media_app/features/auth/models/user_data.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
   final SupabaseClient supabase = Supabase.instance.client;
+  final supabaseDatabaseServices = SupabaseDatabaseServices.instance;
 
   Future<void> signInWithEmail(String email, String password) async {
     try {
@@ -52,16 +55,14 @@ class AuthService {
   }
 
   Future<void> _setUserData(String name, String email, String userId) async {
-    final userData = UserData(id: userId, name: name, email: email);
     try {
-      await supabase.from("users").insert({
-        'name': name,
-        'email': email,
-        'id': userId,
-      });
-      print("User inserted successfully!");
+      final userData = UserData(id: userId, name: name, email: email);
+      await supabaseDatabaseServices.insertRow(
+        table: AppTablesNames.users,
+        values: userData.toMap(),
+      );
     } catch (e) {
-      print("Error inserting user: $e");
+      rethrow;
     }
   }
 }

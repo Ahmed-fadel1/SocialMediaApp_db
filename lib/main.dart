@@ -42,7 +42,7 @@ class SocialMediaApp extends StatelessWidget {
                 theme: AppTheme.lightTheme,
                 onGenerateRoute: (settings) =>
                     AppRouter().generateRoute(settings),
-                initialRoute: AppRoutes.homeRoute,
+                initialRoute: AppRoutes.authRoute,
                 debugShowCheckedModeBanner: false,
               );
             },
